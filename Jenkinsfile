@@ -5,10 +5,16 @@ pipeline {
             steps {
                 script {
                     echo "building the application..."
+                    echo "Executing pipeline for branch $BRANCH_NAME"
                 }
             }
         }
         stage("build") {
+            when {
+                expression {
+                    BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 script {
                     echo "building the docker image..."
@@ -16,6 +22,11 @@ pipeline {
             }
         }
         stage("deploy") {
+            when {
+                expression {
+                    BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 script {
                     echo "deploying the application..."
@@ -26,3 +37,4 @@ pipeline {
 
     }
 }
+
